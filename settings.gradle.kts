@@ -8,3 +8,4 @@
  */
 
 rootProject.name = "cdp-assignment-1"
+include("app")
