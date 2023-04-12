@@ -7,6 +7,7 @@ import pcd.threads.executor.ExecutorService;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.stream.Stream;
 public class DirectoryAnalysisTask implements Runnable {
 
     private static final int MAX_FILE_NUMBER_FOR_SUBMIT = 1000;
+    private static final List<String> parsableFileExtensions = Arrays.asList("java", "c", "cpp", "py", "sh", "txt", "scala");
 
     private final String path;
     private final FileMonitor fileMonitor;
@@ -44,9 +46,13 @@ public class DirectoryAnalysisTask implements Runnable {
         int numberOfFilesToProcess = Math.min(numberOfFiles, MAX_FILE_NUMBER_FOR_SUBMIT);
         List<File> filesToProcess = files.subList(0, numberOfFilesToProcess);
         filesToProcess.forEach(file -> {
-            long lines = getFileLineCount(file);
-            this.fileMonitor.addEntry(file, lines);
-            this.linesRangeMonitor.incRangeCount(lines);
+            try {
+                long lines = getFileLineCount(file);
+                this.fileMonitor.addEntry(file, lines);
+                this.linesRangeMonitor.incRangeCount(lines);
+            } catch (Exception e) {
+                System.out.println("[Err] Error reading file " + file + ":" + e.getMessage());
+            }
         });
         for(int i = 0; i < numberOfNewTask; i++) {
             // Submit remaining files to other task
@@ -70,7 +76,7 @@ public class DirectoryAnalysisTask implements Runnable {
     private List<File> getFiles(File rootDir) {
         try {
             return Arrays.stream(Objects.requireNonNull(rootDir.listFiles()))
-                    .filter(file -> file.isFile() && FilenameUtils.getExtension(file.getPath()).equals("java")).collect(Collectors.toList());
+                    .filter(file -> file.isFile() && isAParsableFile(file)).collect(Collectors.toList());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
@@ -79,10 +85,14 @@ public class DirectoryAnalysisTask implements Runnable {
 
     private long getFileLineCount(File file) {
         try {
-            return Files.lines(Paths.get(file.getPath())).count();
+            return Files.lines(Paths.get(file.getPath()), StandardCharsets.ISO_8859_1).count();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error for file " + file.getPath() + ":" + e.getMessage());
         }
         return 0;
+    }
+
+    private boolean isAParsableFile(File file) {
+        return parsableFileExtensions.contains(FilenameUtils.getExtension(file.getPath()));
     }
 }

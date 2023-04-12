@@ -24,7 +24,7 @@ public class CommandLineVersionMain {
         FileMonitor fileMonitor = new FileMonitor();
         LinesRangeMonitor linesRangeMonitor = new LinesRangeMonitor(NI, MAXL);
         int nCore = Runtime.getRuntime().availableProcessors();
-        System.out.println("[Log] Using " + nCore + " core and " + 3 * nCore + "threads");
+        System.out.println("[Log] Using " + nCore + " core and " + 3 * nCore + " threads");
         ExecutorService service = Executors.newFixedThreadPool( 3 * nCore);
 
         Chrono cron = new Chrono();
