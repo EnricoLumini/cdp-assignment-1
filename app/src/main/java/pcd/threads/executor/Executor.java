@@ -14,7 +14,10 @@ public class Executor implements Runnable {
     @Override
     public void run() {
         while (ThreadPool.jobsQueue.size() > 0) {
-            ThreadPool.jobsQueue.poll().run();
+            Runnable task = ThreadPool.jobsQueue.poll();
+            if(task != null) {
+                task.run();
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ public class ThreadPool implements ExecutorService{
     protected static LinkedBlockingQueue<Runnable> jobsQueue;
     protected static AbstractQueue<Thread> threadsList;
     private static Executor executor;
+    private boolean enabled;
 
     public ThreadPool(int cp) {
         capacity = cp;
@@ -18,12 +19,16 @@ public class ThreadPool implements ExecutorService{
         jobsQueue = new LinkedBlockingQueue<>();
         threadsList = new ConcurrentLinkedQueue<>();
         executor = new Executor();
+        this.enabled = true;
     }
 
     @Override
-    public void execute(Runnable r) {
-        jobsQueue.add(r);
-        executor.execute();
+    public synchronized void execute(Runnable r) {
+        // Add to jobs queue only if executor is enabled
+        if (this.enabled) {
+            jobsQueue.add(r);
+            executor.execute();
+        }
     }
 
     @Override
@@ -31,10 +36,17 @@ public class ThreadPool implements ExecutorService{
         while (threadsList.size() > 0) {
             try {
                 threadsList.poll().join();
-                //executor.removeFromThreadsList(thread);
+                currentCapacity = currentCapacity - 1;
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void disable() {
+        // Disable executor and clear jobs queue
+        this.enabled = false;
+        jobsQueue.clear();
     }
 }

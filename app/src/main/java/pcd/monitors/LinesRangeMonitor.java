@@ -1,4 +1,4 @@
-package pcd.monitor;
+package pcd.monitors;
 
 import pcd.utils.Range;
 import java.util.HashMap;

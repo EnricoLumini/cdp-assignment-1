@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pcd.gui.Controller">
    <children>
-      <TextField layoutX="158.0" layoutY="40.0" prefHeight="24.0" prefWidth="249.0" />
-      <Button layoutX="383.0" layoutY="40.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" />
-      <Label layoutX="14.0" layoutY="44.0" text="Directory  to analyse" />
-      <Button layoutX="424.0" layoutY="40.0" mnemonicParsing="false" text="Analyse" />
-      <TextField layoutX="212.0" layoutY="76.0" text="100" />
-      <Label layoutX="14.0" layoutY="80.0" text="Max number of file to display" />
-      <Label layoutX="14.0" layoutY="148.0" text="Max number of lines for ranges" />
-      <Label layoutX="14.0" layoutY="115.0" text="Number of ranges" />
-      <TextField layoutX="141.0" layoutY="111.0" text="5" />
-      <TextField layoutX="226.0" layoutY="144.0" text="200" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="20.0" layoutY="209.0" prefHeight="373.0" prefWidth="363.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
-      </ScrollPane>
-      <BarChart layoutX="371.0" layoutY="200.0" prefHeight="400.0" prefWidth="401.0">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
-      <Label layoutX="102.0" layoutY="184.0" text="Files with max number of lines" />
-      <Label layoutX="487.0" layoutY="184.0" text="Distribution of files by line count" />
+      <TextField fx:id="dirToAnalyze" layoutX="154.0" layoutY="30.0" prefHeight="24.0" prefWidth="279.0" text="this" />
+      <Button fx:id="selectDirectoryButton" layoutX="438.0" layoutY="30.0" mnemonicParsing="false" onAction="#selectDirectory" prefHeight="24.0" prefWidth="24.0" />
+      <Label layoutX="10.0" layoutY="34.0" text="Directory  to analyse" />
+      <Button fx:id="startButton" layoutX="403.0" layoutY="134.0" mnemonicParsing="false" onAction="#startAnalysis" prefWidth="70.0" text="Analyse" textAlignment="CENTER" />
+      <TextField fx:id="nOfFileToDisplay" layoutX="208.0" layoutY="66.0" text="10" />
+      <Label layoutX="10.0" layoutY="70.0" text="Max number of file to display" />
+      <Label layoutX="10.0" layoutY="138.0" text="Max number of lines for ranges" />
+      <Label layoutX="10.0" layoutY="105.0" text="Number of ranges" />
+      <TextField fx:id="nOfRanges" layoutX="137.0" layoutY="101.0" text="5" />
+      <TextField fx:id="nOfMaxLinesForRanges" layoutX="222.0" layoutY="134.0" text="200" />
+      <TableView fx:id="maxLinesFileTable" layoutX="10.0" layoutY="214.0" prefHeight="360.0" prefWidth="480.0">
+        <columns>
+          <TableColumn editable="false" prefWidth="380.0" resizable="false" sortable="false" text="File path" />
+          <TableColumn editable="false" prefWidth="100.0" resizable="false" sortable="false" text="# of lines" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label layoutX="165.0" layoutY="186.0" text="Files with max number of lines" />
+      <Label layoutX="665.0" layoutY="186.0" text="Distribution of files by line count" />
+      <TextArea fx:id="logTextArea" editable="false" layoutX="501.0" layoutY="22.0" prefHeight="138.0" prefWidth="489.0" />
+      <ImageView fx:id="chargingimageView" fitHeight="16.0" fitWidth="16.0" layoutX="479.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>

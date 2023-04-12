@@ -18,11 +18,6 @@ public class Chrono {
 		startTime = getTime();
 		running = false;
 	}
-
-	public void stopAndPrintTime() {
-		this.stop();
-		System.out.println("[Log] Time elapsed: "+this.getTime()+" ms.");
-	}
 	
 	public long getTime(){
 		if (running){

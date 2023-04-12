@@ -6,4 +6,5 @@ public interface ExecutorService {
 
     void joinAll();
 
+    void disable();
 }

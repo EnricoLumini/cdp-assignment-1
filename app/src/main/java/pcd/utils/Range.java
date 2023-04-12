@@ -15,7 +15,7 @@ public class Range {
     }
 
     public boolean contains(long n) {
-        return (n >= this.low && n <= this.high);
+        return this.high > -1 ? (n >= this.low && n <= this.high) : n >= this.low;
     }
 
     public long getLow() {
@@ -24,6 +24,6 @@ public class Range {
 
     @Override
     public String toString() {
-        return "[" + low + "," + high + "]";
+        return this.high > -1 ? "[" + low + "," + high + "]" : ">" + low;
     }
 }
